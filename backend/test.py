@@ -50,7 +50,7 @@ def response():
           number= myCol.find({'_id':number})[0]
           number['sendList']=True
           myCol.update_one({'_id':number['_id']},{'$set':number},upsert=True)
-     if message_body == 'STOP':
+     elif message_body == 'STOP':
           print('STOP')
           myCol.remove({'_id':number})
      elif message_body == 'START':
@@ -83,50 +83,68 @@ def response():
 def add_number():
      phone = request.get_json()['phone']
      cities = request.get_json()['cities']
-     print(phone)
-     print(cities)
+     
+     cities_formatted = ', '.join(cities)
+
+     try:
+          res = myCol.find({'_id':phone})[0]
+          track_list = res['cities']
+     except pymongo.errors.InvalidOperation:
+          message = client.messages.create(
+               to=phone, 
+               from_='7043502751',
+               body = 'Thank you for subscribing to RU Vaxxed, standard message and data rates may apply.'
+          )
+     else:
+          for city in cities:
+               track_list.append(city)
+          cities = track_list
+     
+     
      myDict={'_id':phone,'cities':cities,'sendList':True}
      x=myCol.update_one({'_id':myDict['_id']},{'$set':myDict},upsert=True)
+
+     client.messages.create(
+          to=phone,
+          from_='7043502751',
+          body = f'You have successfully subscribed to notifications for {cities_formatted}'
+     )
      print(x)
      return 'OK'
 
-def send(phoneNum,locations):
+def send(phone_num,locations):
      converted=my_string = ','.join(locations)
      message = client.messages.create(
-          to='9086440211', 
-          from_="7043502751",
-          body = 'There are vaccination appointments available in {}. Click the link to sign up:\nhttps://www.cvs.com/vaccine/intake/store/covid-screener/covid-qns'.format(converted)
+          to=phone_num, 
+          from_='7043502751',
+          body = f'There are vaccination appointments available in {converted}. Click the link to sign up:\nhttps://www.cvs.com/vaccine/intake/store/covid-screener/covid-qns'
      )
      message = client.messages.create(
-          to='9086440211', 
-          from_="7043502751",
+          to=phone_num, 
+          from_='7043502751',
           body = 'If you would like to continue recieving messages, please type CONTINUE'
      )
      # print(message.sid)
 
-def sendTexts():
-     print("Running sendTexts")
+def send_texts():
      available=get_available()
      if(len(available)==0):
           return
-     for crtNum in myCol.find():
-          print("Printing current number")
-          print(crtNum)
+     for crt_num in myCol.find():
           locations=list()
-          if crtNum['sendList']==True:
-               for userLoc in crtNum['cities']:
+          if crt_num['sendList']==True:
+               for userLoc in crt_num['cities']:
                     if userLoc in available:
                          locations.append(userLoc)
                if(len(locations)!=0):
-                    send(crtNum,locations)
-                    crtNum['sendList']=False
-                    myCol.update_one({'_id':crtNum['_id']},{'$set':crtNum},upsert=True)
+                    send(crt_num['_id'],locations)
+                    crt_num['sendList']=False
+                    myCol.update_one({'_id':crt_num['_id']},{'$set':crt_num},upsert=True)
 
 if __name__ == "__main__":
-     print('test')
      scheduler = BackgroundScheduler()
-     sendTexts()
-     scheduler.add_job(func=sendTexts, trigger="interval", minutes=1)
+     send_texts()
+     scheduler.add_job(func=send_texts, trigger="interval", minutes=1)
      scheduler.start()
      atexit.register(lambda: scheduler.shutdown())
      app.run()
