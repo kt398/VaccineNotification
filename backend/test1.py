@@ -14,7 +14,7 @@ auth_token  = os.getenv('AUTH_TOKEN')
 client = Client(account_sid, auth_token)
 
 message = client.messages.create(
-    to="9084204925", 
+    to="9086440211", 
     from_="7043502751",
     body="Hi\n-Anonymous")
 
