@@ -62,7 +62,7 @@ def response():
                track_list = cities_to_track['cities']
                if message_body not in track_list:
                     track_list.append(message_body)
-                    myCol.update_one({'_id':number},{'$set':{'_id':number,'cities':track_list}},upsert=True)
+                    myCol.update_one({'_id':number},{'$set':{'_id':number,'cities':track_list, 'sendList':True}},upsert=True)
                     resp.message(f'Successfully signed up to receive updates for vaccine appointments in {message_body}.')
                
                else:
@@ -146,15 +146,18 @@ def send_texts():
                     crt_num['sendList']=False
                     myCol.update_one({'_id':crt_num['_id']},{'$set':crt_num},upsert=True)
 
-if __name__ == "__main__":
+def setup():
      scheduler = BackgroundScheduler()
      response = requests.get("https://www.cvs.com/immunizations/covid-19-vaccine/immunizations/covid-19-vaccine.vaccine-status.NJ.json?vaccineinfo")
      x = response.json()
+     print("for debugging purposes")
      for city in x['responsePayloadData']['data']['NJ']:
           city_list.append(city['city'])
-     print(city_list)
      send_texts()
      scheduler.add_job(func=send_texts, trigger="interval", minutes=1)
      scheduler.start()
      atexit.register(lambda: scheduler.shutdown())
+app.before_first_request(setup)
+
+if __name__ == "__main__":
      app.run()
