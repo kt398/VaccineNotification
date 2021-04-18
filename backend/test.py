@@ -15,10 +15,13 @@ def get_available():
 
 @app.route('/newnumber', methods=['POST'])
 def add_number():
-    phone = request.args.get("phone")
-    cities = request.args.get("cities")
+    phone = request.get_json()['phone']
+    cities = request.get_json()['cities']
     print(phone)
     print(cities)
+
+    
+    
     return 'OK'
 
 if __name__ == "__main__":

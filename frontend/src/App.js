@@ -51,11 +51,9 @@ function App() {
     console.log(phoneNumber)
     console.log(selection)
 
-    axios.post('/newnumber',{
-      params:{
-        phone: phoneNumber,
-        cities: selection,
-      }
+    axios.post(`/newnumber`,{
+      phone: phoneNumber,
+      cities: selection
     })
   }
 
