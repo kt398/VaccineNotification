@@ -4,10 +4,42 @@
   justify-content: center;
   align-items:center;
   min-height:100vh;
+  color: white;
 }
 
 body{
   display:flex;
   flex-direction: column;
   align-items: center;
+  background-color: #252526 !important;
+}
+
+#selectMulti option:checked,
+#selectMulti option:focus {
+  background: linear-gradient(to left, rgb(146, 241, 237), #87cefa);
+  -webkit-text-fill-color: #ffffff;
+  color: #ffffff;
+}
+
+.Info{
+  background-color: #252526 !important;
+}
+
+.lead{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.display-3{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo{
+  /* position: absolute;
+  top: 10%;
+  left: 10%; */
+  width:10%;
 }
