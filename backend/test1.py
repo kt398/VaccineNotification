@@ -1,14 +1,20 @@
 from twilio.rest import Client
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
 
 # Your Account SID from twilio.com/console
-account_sid = "AC827fcb589763a18213957e3e4022e659"
+account_sid = os.getenv('TWILIO_SID')
 # Your Auth Token from twilio.com/console
-auth_token  = "edf4a626e6fcffba32ee8786fd2d2027"
+auth_token  = os.getenv('AUTH_TOKEN')
 
 client = Client(account_sid, auth_token)
 
 message = client.messages.create(
-    to="7327544486", 
+    to="9084204925", 
     from_="7043502751",
     body="Hi\n-Anonymous")
 
