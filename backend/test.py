@@ -21,3 +21,15 @@ if __name__ == "__main__":
      print('test')
      app.run()
 
+# class User:
+#      def __init__(self,number,cities):
+#           self.cities = []=cities
+#           self.number=number
+#      def getMatchingCities(availApptCities):
+#           output=list[]
+#           for appt in availApptCities:
+#                for c in cities:
+#                     if c==appt:
+#                          output.append(c)
+#                          break
+#           return output
