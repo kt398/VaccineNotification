@@ -33,7 +33,6 @@ def get_available():
      for city in x['responsePayloadData']['data']['NJ']:
           if city['status'] == 'Available':
                available.append(city['city'])
-          city_list.append(city['city'])
 
      print(available)
      return available
@@ -149,6 +148,11 @@ def send_texts():
 
 if __name__ == "__main__":
      scheduler = BackgroundScheduler()
+     response = requests.get("https://www.cvs.com/immunizations/covid-19-vaccine/immunizations/covid-19-vaccine.vaccine-status.NJ.json?vaccineinfo")
+     x = response.json()
+     for city in x['responsePayloadData']['data']['NJ']:
+          city_list.append(city['city'])
+     print(city_list)
      send_texts()
      scheduler.add_job(func=send_texts, trigger="interval", minutes=1)
      scheduler.start()

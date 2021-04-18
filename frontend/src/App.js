@@ -21,7 +21,13 @@ function App() {
   }, [])
 
   async function getCities(){
-    axios.get("https://www.cvs.com/immunizations/covid-19-vaccine/immunizations/covid-19-vaccine.vaccine-status.NJ.json?vaccineinfo",{
+    axios.get("https://afternoon-basin-72348.herokuapp.com/https://www.cvs.com/immunizations/covid-19-vaccine/immunizations/covid-19-vaccine.vaccine-status.NJ.json?vaccineinfo",{
+      header:{
+        'Access-Control-Allow-Origin': 'http://www.cvs.com',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Content-Type': 'application/json',
+        'Authorization': null,
+      }
     }).then(res => {
       let x = res.data['responsePayloadData']['data']['NJ'];
       var list = [];
@@ -59,11 +65,16 @@ function App() {
     }
 
     console.log(phoneNumber)
-    axios.post(`/newnumber`,{
+    axios.post(`https://afternoon-basin-72348.herokuapp.com/https://ruvaxserver.herokuapp.com/newnumber`,
+    {
       phone: phoneNumber,
       cities: selection
-    })
-    window.location.reload();
+    }).then(()=>{
+      window.location.reload();
+    }).catch(e=>{
+      console.log(e)
+    })  
+    
   }
 
   return (

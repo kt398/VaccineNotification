@@ -15,7 +15,7 @@
     "validator": "^13.5.2",
     "web-vitals": "^1.1.1"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://ruvaxserver.herokuapp.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
