@@ -83,13 +83,19 @@ def response():
 def add_number():
      phone = request.get_json()['phone']
      cities = request.get_json()['cities']
-     
+     print(f'Phone #:{phone}')
      cities_formatted = ', '.join(cities)
 
      try:
           res = myCol.find({'_id':phone})[0]
           track_list = res['cities']
      except pymongo.errors.InvalidOperation:
+          message = client.messages.create(
+               to=phone, 
+               from_='7043502751',
+               body = 'Thank you for subscribing to RU Vaxxed, standard message and data rates may apply.'
+          )
+     except IndexError:
           message = client.messages.create(
                to=phone, 
                from_='7043502751',
