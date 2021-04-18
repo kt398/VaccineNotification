@@ -55,6 +55,7 @@ function App() {
       phone: phoneNumber,
       cities: selection
     })
+    window.location.reload();
   }
 
   return (
