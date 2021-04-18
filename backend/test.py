@@ -15,7 +15,11 @@ def get_available():
 
 @app.route('/newnumber', methods=['POST'])
 def add_number():
-    phone = request.form['number']
+    phone = request.args.get("phone")
+    cities = request.args.get("cities")
+    print(phone)
+    print(cities)
+    return 'OK'
 
 if __name__ == "__main__":
      print('test')
