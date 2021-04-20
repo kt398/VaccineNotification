@@ -1,6 +1,6 @@
 # VaccineNotification
 
 # Contributors
-Kunal Thakker: github.com/kt398 \n
-Bryan Law: github.com/walrm \n
-Shreyas Bhise: github.com/shreyasBhise \n
+Bryan Law: github.com/walrm
+Shreyas Bhise: github.com/shreyasBhise
+Kunal Thakker: github.com/kt398
